@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iservmail"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Fabian Bühler <buehler.fabian@gmx.de>"]
 readme = "README.md"
