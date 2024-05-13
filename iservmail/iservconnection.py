@@ -33,8 +33,7 @@ class IservConnection():
                 By.XPATH, '/html/body/div[1]/main/div/'
                 'div[2]/form/div[1]/input')
             login_password = self.driver.find_element(
-                By.XPATH, '/html/body/div[1]/main/div/'
-                'div[2]/form/div[2]/input')
+                By.XPATH, '//*[@id="password_login"]')
             login_button = self.driver.find_element(
                 By.XPATH, '/html/body/div[1]/main/div/'
                 'div[2]/form/div[3]/div[1]/button')
