@@ -31,12 +31,12 @@ class IservConnection():
         try:
             login_username = self.driver.find_element(
                 By.XPATH, '/html/body/div[1]/main/div/'
-                'div[2]/form/div[1]/input')
+                'div[2]/form/div[2]/input')
             login_password = self.driver.find_element(
                 By.XPATH, '//*[@id="password_login"]')
             login_button = self.driver.find_element(
-                By.XPATH, '/html/body/div[1]/main/div/'
-                'div[2]/form/div[3]/div[1]/button')
+                By.XPATH, '/html/body/div[1]/main/div/div[2]'
+                '/form/div[4]/div[1]/button')
 
             login_username.clear()
             login_username.send_keys(self.USERNAME)
