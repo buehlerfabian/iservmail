@@ -38,8 +38,11 @@ def test_goto_mail():
     with IservConnection() as con:
         con._login()
         con._goto_mail()
-        con.driver.find_element(By.ID, 'mail-compose')
+        # assert if this page contains the text 'Posteingang' and 'fabian.buehler@stoerck-gymnasium.de'
+        assert 'Posteingang' in con.driver.page_source
+        assert config_test.iserv_address_for_test in con.driver.page_source
 
+        
 
 def test_compose_new_mail():
     """Asserts that new mail form is opened successfully."""
