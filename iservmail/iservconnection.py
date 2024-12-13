@@ -48,10 +48,12 @@ class IservConnection():
 
     def _goto_mail(self):
         self.driver.get(f"{self.iserv_url}/iserv/mail")
+        # wait for the page to load
+        self.driver.implicitly_wait(5)
 
     def _compose_new_mail(self):
-        compose_button = next(elem for elem in self.driver.find_elements(
-            By.ID, 'mail-compose') if elem.is_displayed())
+        compose_button = self.driver.find_element(By.XPATH,
+                                                  '//a[@title="Verfassen"]')
         compose_button.click()
 
     def _set_receiver(self, receiver=['']):
