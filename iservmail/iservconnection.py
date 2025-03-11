@@ -29,22 +29,12 @@ class IservConnection:
     def _login(self):
         self.driver.get(self.iserv_url)
         try:
-            # login_username = self.driver.find_element(
-            #     By.XPATH, "/html/body/div[1]/main/div/" "div[2]/form/div[2]/input"
-            # )
             login_username = self.driver.find_element(
                 By.XPATH, "/html/body/main/div/div[2]/div[2]/form/div[2]/input"
             )
-            # login_password = self.driver.find_element(
-            #     By.XPATH, '//*[@id="password_login"]'
-            # )
             login_password = self.driver.find_element(
                 By.XPATH, '//*[@id="password_login"]'
             )
-            # login_button = self.driver.find_element(
-            #     By.XPATH,
-            #     "/html/body/div[1]/main/div/div[2]" "/form/div[4]/div[1]/button",
-            # )
             login_button = self.driver.find_element(
                 By.XPATH,
                 '//*[@id="loginButton"]',
@@ -80,6 +70,9 @@ class IservConnection:
         subject_field = self.driver.find_element(By.ID, "iserv_mail_compose_subject")
         subject_field.clear()
         subject_field.send_keys(subject)
+
+    def _change_to_not_formatted(self):
+        pass
 
     def _set_body(self, body=""):
         body_field = self.driver.find_element(By.ID, "iserv_mail_compose_content")
