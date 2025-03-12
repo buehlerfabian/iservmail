@@ -28,8 +28,7 @@ def test_login():
     """Asserts that IServ login is successful."""
     with IservConnection() as con:
         con._login()
-        username = con.driver.find_element(By.CLASS_NAME,
-                                           'profile-username')
+        username = con.driver.find_element(By.CLASS_NAME, "profile-username")
         assert username.text == config_test.iserv_full_username
 
 
@@ -40,7 +39,7 @@ def test_goto_mail():
         con._goto_mail()
         # assert if this page contains the text 'Posteingang'
         # and 'fabian.buehler@stoerck-gymnasium.de'
-        assert 'Posteingang' in con.driver.page_source
+        assert "Posteingang" in con.driver.page_source
         assert config_test.iserv_address_for_test in con.driver.page_source
 
 
@@ -52,10 +51,12 @@ def test_compose_new_mail():
         con._compose_new_mail()
 
         to_field = con.driver.find_element(
-            By.XPATH, '/html/body/div/div[2]/div[3]/'
-            'div[1]/div/div/div/div/div/form/div[1]/'
-            'div[1]/div[2]/div[1]/label')
-        assert to_field.text == 'Empfänger'
+            By.XPATH,
+            "/html/body/div/div[2]/div[3]/"
+            "div[1]/div/div/div/div/div/form/div[1]/"
+            "div[1]/div[2]/div[1]/label",
+        )
+        assert to_field.text == "Empfänger"
 
 
 def test_set_receiver():
@@ -69,7 +70,7 @@ def test_set_receiver():
             con.driver.find_element(
                 By.XPATH,
                 "//div[@class='item'][contains(@data-value,"
-                f"'{config_test.iserv_address_for_test}')]"
+                f"'{config_test.iserv_address_for_test}')]",
             )
         except NoSuchElementException:
             assert False
@@ -82,10 +83,19 @@ def test_set_subject():
         con._goto_mail()
         con._compose_new_mail()
         con._set_subject("Betreff-Text")
-        subject_field = con.driver.find_element(
-            By.ID, 'iserv_mail_compose_subject'
-        )
-        assert subject_field.get_attribute('value') == "Betreff-Text"
+        subject_field = con.driver.find_element(By.ID, "iserv_mail_compose_subject")
+        assert subject_field.get_attribute("value") == "Betreff-Text"
+
+
+def test_change_to_not_formatted():
+    """Asserts that text can be changed to not formatted."""
+    with IservConnection() as con:
+        con._login()
+        con._goto_mail()
+        con._compose_new_mail()
+        con._change_to_not_formatted()
+        format_button = con.driver.find_element(By.ID, "iserv_mail_btn_format")
+        assert "Formatiert" in format_button.text
 
 
 def test_set_body():
@@ -95,10 +105,8 @@ def test_set_body():
         con._goto_mail()
         con._compose_new_mail()
         con._set_body("Zeile1\n Zeile2")
-        body_field = con.driver.find_element(
-            By.ID, 'iserv_mail_compose_content'
-        )
-        assert body_field.get_attribute('value') == "Zeile1\n Zeile2"
+        body_field = con.driver.find_element(By.ID, "iserv_mail_compose_content")
+        assert body_field.get_attribute("value") == "Zeile1\n Zeile2"
 
 
 def test__send_mail():
@@ -113,7 +121,8 @@ def test__send_mail():
         con._send_mail()
         assert con.driver.current_url == (
             f"{config.iserv_url}/iserv/mail/index/"
-            "fabian.buehler@stoerck-gymnasium.de/INBOX")
+            "fabian.buehler@stoerck-gymnasium.de/INBOX"
+        )
 
 
 def test_send_mail():
@@ -122,29 +131,33 @@ def test_send_mail():
         assert not con.send_mail(
             receiver=[f"{config_test.outside_address_for_test}"],
             subject="Testmail",
-            body="Kann gelöscht werden."
+            body="Kann gelöscht werden.",
         )
         assert not con.send_mail(
             receiver=["this_is_not_a_mail_address"],
             subject="Testmail",
-            body="Kann gelöscht werden."
+            body="Kann gelöscht werden.",
         )
         assert not con.send_mail(
-            receiver=[f"{config_test.iserv_address_for_test}",
-                      "this_is_not_a_mail_address"],
+            receiver=[
+                f"{config_test.iserv_address_for_test}",
+                "this_is_not_a_mail_address",
+            ],
             subject="Testmail",
-            body="Kann gelöscht werden."
+            body="Kann gelöscht werden.",
         )
         assert not con.send_mail(
-            receiver=[f"{config_test.outside_address_for_test}",
-                      f"{config_test.iserv_address_for_test}"],
+            receiver=[
+                f"{config_test.outside_address_for_test}",
+                f"{config_test.iserv_address_for_test}",
+            ],
             subject="Testmail",
-            body="Kann gelöscht werden."
+            body="Kann gelöscht werden.",
         )
         assert con.send_mail(
             receiver=[f"{config_test.iserv_address_for_test}"],
             subject="Testmail",
-            body="Kann gelöscht werden."
+            body="Kann gelöscht werden.",
         )
 
 
@@ -154,5 +167,5 @@ def test_fail_without_contextmanager():
     assert not con.send_mail(
         receiver=[f"{config_test.iserv_address_for_test}"],
         subject="Testmail",
-        body="Kann gelöscht werden."
+        body="Kann gelöscht werden.",
     )

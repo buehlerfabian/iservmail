@@ -72,7 +72,17 @@ class IservConnection:
         subject_field.send_keys(subject)
 
     def _change_to_not_formatted(self):
-        pass
+        format_button = self.driver.find_element(By.ID, "iserv_mail_btn_format")
+        format_button_text = format_button.text
+        if "Nicht formatiert" in format_button_text:
+            format_button.click()
+            self.driver.implicitly_wait(1)
+            change_button = self.driver.find_element(
+                By.XPATH,
+                "/html/body/div[6]/div[2]/div/div/div/div/div/div/div/div[4]/button[1]",
+            )
+            change_button.click()
+        format_button_text = format_button.text
 
     def _set_body(self, body=""):
         body_field = self.driver.find_element(By.ID, "iserv_mail_compose_content")
@@ -104,6 +114,7 @@ class IservConnection:
         self._compose_new_mail()
         self._set_receiver(receiver_list)
         self._set_subject(subject)
+        self._change_to_not_formatted()
         self._set_body(body)
         self._send_mail()
         return True
