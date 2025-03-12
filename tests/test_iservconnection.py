@@ -104,6 +104,7 @@ def test_set_body():
         con._login()
         con._goto_mail()
         con._compose_new_mail()
+        con._change_to_not_formatted()
         con._set_body("Zeile1\n Zeile2")
         body_field = con.driver.find_element(By.ID, "iserv_mail_compose_content")
         assert body_field.get_attribute("value") == "Zeile1\n Zeile2"
@@ -117,6 +118,7 @@ def test__send_mail():
         con._compose_new_mail()
         con._set_receiver([f"{config_test.iserv_address_for_test}"])
         con._set_subject("Testmail")
+        con._change_to_not_formatted()
         con._set_body("Kann gelöscht werden.")
         con._send_mail()
         assert con.driver.current_url == (
