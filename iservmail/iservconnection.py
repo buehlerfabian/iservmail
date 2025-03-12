@@ -7,7 +7,7 @@ from email_validator import validate_email, EmailNotValidError
 import config
 
 
-class IservConnection():
+class IservConnection:
     def __init__(self, headless=True) -> None:
         self._options = Options()
         self.driver = None
@@ -30,13 +30,15 @@ class IservConnection():
         self.driver.get(self.iserv_url)
         try:
             login_username = self.driver.find_element(
-                By.XPATH, '/html/body/div[1]/main/div/'
-                'div[2]/form/div[2]/input')
+                By.XPATH, "/html/body/main/div/div[2]/div[2]/form/div[2]/input"
+            )
             login_password = self.driver.find_element(
-                By.XPATH, '//*[@id="password_login"]')
+                By.XPATH, '//*[@id="password_login"]'
+            )
             login_button = self.driver.find_element(
-                By.XPATH, '/html/body/div[1]/main/div/div[2]'
-                '/form/div[4]/div[1]/button')
+                By.XPATH,
+                '//*[@id="loginButton"]',
+            )
 
             login_username.clear()
             login_username.send_keys(self.USERNAME)
@@ -52,40 +54,46 @@ class IservConnection():
         self.driver.implicitly_wait(5)
 
     def _compose_new_mail(self):
-        compose_button = self.driver.find_element(By.XPATH,
-                                                  '//a[@title="Verfassen"]')
+        compose_button = self.driver.find_element(By.XPATH, '//a[@title="Verfassen"]')
         compose_button.click()
 
-    def _set_receiver(self, receiver=['']):
+    def _set_receiver(self, receiver=[""]):
         receiver_field = self.driver.find_element(
-            By.ID, 'iserv_mail_compose_to-selectized'
+            By.ID, "iserv_mail_compose_to-selectized"
         )
         receiver_field.clear()
         for rec in receiver:
             receiver_field.send_keys(rec)
             receiver_field.send_keys(Keys.TAB)
 
-    def _set_subject(self, subject=''):
-        subject_field = self.driver.find_element(
-            By.ID, 'iserv_mail_compose_subject'
-        )
+    def _set_subject(self, subject=""):
+        subject_field = self.driver.find_element(By.ID, "iserv_mail_compose_subject")
         subject_field.clear()
         subject_field.send_keys(subject)
 
-    def _set_body(self, body=''):
-        body_field = self.driver.find_element(
-            By.ID, 'iserv_mail_compose_content'
-        )
+    def _change_to_not_formatted(self):
+        format_button = self.driver.find_element(By.ID, "iserv_mail_btn_format")
+        format_button_text = format_button.text
+        if "Nicht formatiert" in format_button_text:
+            format_button.click()
+            self.driver.implicitly_wait(1)
+            change_button = self.driver.find_element(
+                By.XPATH,
+                "/html/body/div[6]/div[2]/div/div/div/div/div/div/div/div[4]/button[1]",
+            )
+            change_button.click()
+        format_button_text = format_button.text
+
+    def _set_body(self, body=""):
+        body_field = self.driver.find_element(By.ID, "iserv_mail_compose_content")
         body_field.clear()
         body_field.send_keys(body)
 
     def _send_mail(self):
-        send_button = self.driver.find_element(
-            By.ID, "iserv_mail_compose_actions_send"
-        )
+        send_button = self.driver.find_element(By.ID, "iserv_mail_compose_actions_send")
         send_button.click()
 
-    def send_mail(self, receiver=None, subject='', body=''):
+    def send_mail(self, receiver=None, subject="", body=""):
         if receiver is None:
             return False
         if self.driver is None:
@@ -106,6 +114,7 @@ class IservConnection():
         self._compose_new_mail()
         self._set_receiver(receiver_list)
         self._set_subject(subject)
+        self._change_to_not_formatted()
         self._set_body(body)
         self._send_mail()
         return True

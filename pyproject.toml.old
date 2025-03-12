@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "iservmail"
+version = "0.6.0"
+description = ""
+authors = ["Fabian Bühler <fabian.buehler@fdtk.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+selenium = "^4.15.2"
+email-validator = "^2.1.0.post1"
+pytest = "^7.4.4"
+aiosmtpd = "^1.4.6"
+asyncio = "^3.4.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
