@@ -1,6 +1,6 @@
 #  IServ-Mail
 
-A simple local web server that forwards incoming emails via the Iserv webmail interface. It can be used when STMP access is blocked in the Iserv configuration.
+A simple local mail server that forwards incoming emails via the Iserv webmail interface. It can be used when STMP access is blocked in the Iserv configuration.
 
 ## Configuration
 Create a file named `config.py` with your Iserv credentials:
