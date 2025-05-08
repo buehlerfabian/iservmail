@@ -54,7 +54,11 @@ class IservConnection:
         self.driver.implicitly_wait(5)
 
     def _compose_new_mail(self):
-        compose_button = self.driver.find_element(By.XPATH, '//a[@title="Verfassen"]')
+        # compose_button = self.driver.find_element(By.XPATH, '//a[@title="Verfassen"]')
+        compose_button = self.driver.find_element(
+            By.XPATH,
+            "//div[@id='app-mount']/div/div/main/div/div/iserv-button[2]",
+        )
         compose_button.click()
 
     def _set_receiver(self, receiver=[""]):

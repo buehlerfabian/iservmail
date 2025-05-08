@@ -45,18 +45,17 @@ def test_goto_mail():
 
 def test_compose_new_mail():
     """Asserts that new mail form is opened successfully."""
-    with IservConnection() as con:
+    with IservConnection(headless=False) as con:
         con._login()
         con._goto_mail()
         con._compose_new_mail()
 
         to_field = con.driver.find_element(
             By.XPATH,
-            "/html/body/div/div[2]/div[3]/"
-            "div[1]/div/div/div/div/div/form/div[1]/"
-            "div[1]/div[2]/div[1]/label",
+            "/html/body/div[1]/div[2]/div[2]/div/"
+            "iserv-breadcrumbs/ol/iserv-breadcrumb[3]/li/span",
         )
-        assert to_field.text == "Empfänger"
+        assert to_field.text == "Verfassen"
 
 
 def test_set_receiver():
